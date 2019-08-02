@@ -1,0 +1,22 @@
+#Выбрать среднюю зарплату по отделам.
+CREATE VIEW `MID_SALARY_BY_DEPART` AS
+SELECT `depart`.`name` AS `Отдел`, AVG(`shtat`.`salary`) AS `Средняя ЗП` FROM `shtat` 
+LEFT JOIN `depart` ON `shtat`.`dep_id` = `depart`.`id` 
+GROUP BY `depart`.`name`; 
+
+
+#Посчитать количество сотрудников во всех отделах. (и заоднообщую зарплату)
+CREATE VIEW `NUMBER_OF_STUFF` AS
+SELECT count(*) AS `Количество чел`, SUM(`salary`) AS `Денег всего` FROM `shtat` ;
+
+#Найти количество сотрудников в отделах и посмотреть, сколько всего денег получает отдел.
+CREATE VIEW `NUM_&_SUMM_STUFF` AS
+SELECT count(*) AS `Количество чел`, SUM(`salary`) AS `Денег на отдел`, `depart`.`name` AS `Отдел` FROM `shtat` 
+LEFT JOIN `depart` ON `shtat`.`dep_id` = `depart`.`id` 
+GROUP BY `dep_id`;
+
+#Выбрать максимальную зарплату у сотрудника.
+CREATE VIEW `MAX_SALARY_PERSONAL2` AS
+SELECT `shtat`.`lastname`, `depart`.`name`, `shtat`.`salary` FROM `shtat` 
+RIGHT JOIN `depart` ON `shtat`.`dep_id` = `depart`.`id` 
+WHERE `shtat`.`salary` = (select MAX(`shtat`.`salary`) from `shtat`) ;
